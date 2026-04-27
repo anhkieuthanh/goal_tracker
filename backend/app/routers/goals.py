@@ -112,9 +112,11 @@ def update_goal(
     goal = db.query(Goal).filter(Goal.id == goal_id, Goal.owner_id == user.id).first()
     if not goal:
         raise HTTPException(status_code=404, detail="Goal not found")
-    for field, value in payload.model_dump(exclude_unset=True).items():
+    update_data = payload.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
         setattr(goal, field, value)
-    _recalc_progress(goal)
+    if "status" not in update_data:
+        _recalc_progress(goal)
     db.commit()
     db.refresh(goal)
     return (
