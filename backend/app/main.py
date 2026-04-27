@@ -1,4 +1,3 @@
-import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -50,7 +49,7 @@ if _static_dir.is_dir():
 
     @app.get("/{full_path:path}")
     async def serve_spa(full_path: str):
-        file_path = _static_dir / full_path
-        if file_path.is_file():
+        file_path = (_static_dir / full_path).resolve()
+        if file_path.is_file() and file_path.is_relative_to(_static_dir.resolve()):
             return FileResponse(file_path)
         return FileResponse(_static_dir / "index.html")
