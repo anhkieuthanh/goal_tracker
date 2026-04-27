@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - goal-data:/app/data
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-goal-tracker-prod-secret-change-me}
+      - DATABASE_URL=sqlite:////app/data/app.db
+
+volumes:
+  goal-data:
