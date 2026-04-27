@@ -28,8 +28,10 @@ def _recalc_progress(goal: Goal) -> None:
     goal.progress = round(done / len(goal.milestones) * 100, 1)
     if goal.progress == 100.0 and goal.status != GoalStatus.ABANDONED:
         goal.status = GoalStatus.COMPLETED
-    elif goal.progress > 0 and goal.status == GoalStatus.NOT_STARTED:
+    elif goal.progress > 0 and goal.status in (GoalStatus.NOT_STARTED, GoalStatus.COMPLETED):
         goal.status = GoalStatus.IN_PROGRESS
+    elif goal.progress == 0 and goal.status == GoalStatus.IN_PROGRESS:
+        goal.status = GoalStatus.NOT_STARTED
 
 
 @router.get("/summary", response_model=GoalSummary)
