@@ -30,7 +30,7 @@ def _recalc_progress(goal: Goal) -> None:
         goal.status = GoalStatus.COMPLETED
     elif goal.progress > 0 and goal.status in (GoalStatus.NOT_STARTED, GoalStatus.COMPLETED):
         goal.status = GoalStatus.IN_PROGRESS
-    elif goal.progress == 0 and goal.status == GoalStatus.IN_PROGRESS:
+    elif goal.progress == 0 and goal.status in (GoalStatus.IN_PROGRESS, GoalStatus.COMPLETED):
         goal.status = GoalStatus.NOT_STARTED
 
 
